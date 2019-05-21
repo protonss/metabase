@@ -31,6 +31,7 @@
    (str/join
     (for [[k vs] {:default-src  ["'none'"]
                   :script-src   ["'self'"
+                                 "http://*"
                                  "'unsafe-eval'" ; TODO - we keep working towards removing this entirely
                                  "https://maps.google.com"
                                  "https://apis.google.com"
@@ -47,12 +48,15 @@
                                  ;; inline script in index.html that loads Google Analytics
                                  "'sha256-uKEj/Qp9AmQA2Xv83bZX9mNVV2VWZteZjIsVNVzLkA0='"]
                   :child-src    ["'self'"
+                                 "http://*"
                                  ;; TODO - double check that we actually need this for Google Auth
                                  "https://accounts.google.com"]
                   :style-src    ["'self'"
+                                 "http://*"
                                  "'unsafe-inline'" ; needed for Google Fonts
                                  "fonts.googleapis.com"]
                   :font-src     ["'self'"
+                                 "http://*" 
                                  "fonts.gstatic.com"
                                  "themes.googleusercontent.com"
                                  (when config/is-dev?
@@ -60,11 +64,13 @@
                   :img-src      ["*"
                                  "'self' data:"]
                   :connect-src  ["'self'"
+                                 "http://*"
                                  ;; MailChimp. So people can sign up for the Metabase mailing list in the sign up process
                                  "metabase.us10.list-manage.com"
                                  (when config/is-dev?
                                    "localhost:8080 ws://localhost:8080")]
-                  :manifest-src ["'self'"]}]
+                  :manifest-src ["'self'"
+                                 "http://*"]}]
       (format "%s %s; " (name k) (str/join " " vs))))})
 
 (defsetting ssl-certificate-public-key
